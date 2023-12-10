@@ -42,13 +42,13 @@ const postMessage = (e) => {
     axios.post("http://localhost:4000/api/", newMessage)
         .then(res => {
             let h2 = document.createElement('h2')
-            h2.textContent = res.data.message
+            h2.textContent = res.data
             document.body.appendChild(h2)
             console.log(res.data)})
 }
 
-const deleteMessage = () => {
-    
+const deleteMessage = (e) => {
+    e.preventDefault()
     axios.delete("http://localhost:4000/api/")
     .then(res => console.log(res.data))
 
@@ -70,3 +70,5 @@ complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', getFortune)
 motivateForm.addEventListener('submit', postMessage )
 deleteBtn.addEventListener('click', deleteMessage)
+
+getMessage()

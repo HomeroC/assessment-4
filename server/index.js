@@ -12,6 +12,7 @@ const { getCompliment, getFortune, postMessage, deleteMessage, getMessage, putMe
 
 app.get("/api/compliment", getCompliment);
 app.get("/api/fortune", getFortune);
+
 app.post("/api/", postMessage)
 app.delete("/api/", deleteMessage)
 app.get("/api/", getMessage)
