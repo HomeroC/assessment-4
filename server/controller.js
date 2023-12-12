@@ -1,6 +1,5 @@
-const messages = require("./controller");
-const arr = []
-
+let arr = []
+let globalID = 1
 
 module.exports = {
   getCompliment: (req, res) => {
@@ -34,25 +33,20 @@ module.exports = {
   },
 
   postMessage: (req, res) => {
-    const { message } = req.body;
-    const arr = [];
-
-    arr.push(message)
+    req.body.id = globalID
+    arr.push(req.body)
+    globalID++
     res.status(200).send(arr);
   },
 
   deleteMessage: (req, res) => {
-    const { message } = req.body;
-    const arr = [];
-
-    let filtered = arr.filter((message) => message != message )
-    console.log(filtered)
-    res.status(200).send(filtered);
+    const newArr = arr.filter((message) => message.id !== +req.params.id)
+    arr = newArr
+    res.status(200).send(arr)
   },
 
   getMessage: (req, res) => {
     res.status(200).send(arr)
   },
 
-  putMessage: (req, res) => {},
 };

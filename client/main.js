@@ -1,8 +1,10 @@
 const complimentBtn = document.getElementById("complimentButton")
 const fortuneBtn = document.getElementById('fortuneButton')
-const deleteBtn = document.getElementById('delete')
-const motivateForm = document.getElementById('motivate-form')
 
+
+const motivateForm = document.getElementById('motivate-form')
+const container = document.getElementById('message-container')
+const message = document.getElementById("input-message")
 
 
 const getCompliment = () => {
@@ -23,52 +25,48 @@ const getFortune = () => {
 };
 
 const getMessage = () => {
-    axios.get("http://localhost:4000/api/")
+    axios
+        .get("http://localhost:4000/api/messages")
         .then(res => {
             console.log(res.data)
     });
 };
 
 
-const postMessage = (e) => {
-    e.preventDefault()
 
-    let message = document.getElementById("input-message")
-
-    let newMessage = {
+const postMessage = (event) => {
+    event.preventDefault()
+    const newMessage = {
         message: message.value,
         }
-
-    axios.post("http://localhost:4000/api/", newMessage)
+        
+        axios
+        .post("http://localhost:4000/api/messages", newMessage)
         .then(res => {
+            
             let h2 = document.createElement('h2')
-            h2.textContent = res.data
-            document.body.appendChild(h2)
-            console.log(res.data)})
+            h2.textContent = message.value
+            h2.addEventListener('click', deleteMessage)
+            container.appendChild(h2)
+            console.log(res.data)
+            
+        })
 }
 
-const deleteMessage = (e) => {
-    e.preventDefault()
-    axios.delete("http://localhost:4000/api/")
-    .then(res => console.log(res.data))
-
+const deleteMessage = (message) => {
+    console.log(message)
+    axios
+    .delete(`http://localhost:4000/api/messages/${message.id}`)
+    .then((res) => {
+        container.innerHTML = ''
+        console.log(res.data)
+    })
 }
-
-const putMessage = () => {
-    let message = document.getElementById("input-message")
-    let messagedUpdated = {
-        message: message.value
-    }
-    axios.put("http://localhost:4000/api/")
-    .then((res) =>  {
-    alert("Message Updated!")
-    console.log(req.data)})
-}
-
 
 complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', getFortune)
-motivateForm.addEventListener('submit', postMessage )
-deleteBtn.addEventListener('click', deleteMessage)
+
+motivateForm.addEventListener('submit', postMessage)
+
 
 getMessage()
