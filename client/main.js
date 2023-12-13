@@ -43,22 +43,29 @@ const postMessage = (event) => {
         axios
         .post("http://localhost:4000/api/messages", newMessage)
         .then(res => {
-            
+            let x = []
+            for(let i =0; i < res.data.length; i++){
+                console.log(res.data[i])
+                console.log(message.value)
+                if(res.data[i].message === message.value){
+                    x = res.data[i]
+                }
+            }
             let h2 = document.createElement('h2')
             h2.textContent = message.value
-            h2.addEventListener('click', deleteMessage)
+            h2.addEventListener('click', () =>  deleteMessage(x, h2))
             container.appendChild(h2)
             console.log(res.data)
             
         })
 }
 
-const deleteMessage = (message) => {
-    console.log(message)
+const deleteMessage = (message, h2) => {
+    console.log(message, h2)
     axios
     .delete(`http://localhost:4000/api/messages/${message.id}`)
     .then((res) => {
-        container.innerHTML = ''
+        container.removeChild(h2)
         console.log(res.data)
     })
 }
